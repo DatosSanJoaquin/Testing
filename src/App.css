@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+
+body {
+  font-family: "Space Mono", monospace;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.CircularProgressbar .CircularProgressbar-text {
+  /* font-size: 1rem; */
+  /* dominant-baseline: middle; */
+  /* text-anchor: middle; */
+  /* fill: "#606A7B" !important; */
+
+  font-weight: 600;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.agrupacion {
+  background-color: #623e90 !important;
+  height: 32px;
+  color: #fff !important;
+  font-size: 1.8rem;
+  font-weight: 700;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.iniciativas {
+  background-color: #623e90 !important;
+  height: 32px;
+  color: #fff !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.App-link {
-  color: #61dafb;
+.headerTabla {
+  background-color: #623e90 !important;
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.custom-table-header {
+  border-bottom: 5px solid #fff; /* Añade un borde sólido al final del encabezado */
+  display: none !important
+  ;
+}
+
+/* .react-bootstrap-table .row-expand-slide-exit-active {
+  transition: opacity 0.8s ease;
+  opacity: 0;
+}
+.react-bootstrap-table .row-expand-slide-appear-active {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+} */
+
+.row-expansion-style {
+  padding: 0px !important;
+}
+
+.row-expand-slide-appear-active {
+  max-height: 1000px;
+  transition: max-height 1s linear !important;
 }
