@@ -15,6 +15,7 @@ import "react-circular-progressbar/dist/styles.css";
 import "./App.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import ModalHitos from "./ModalHitos";
 
 function App() {
   const columns = [
@@ -81,7 +82,9 @@ function App() {
                       marginRight: "10px",
                     }}
                   ></div>
-                  <span className="iniciativas">9 Iniciativas</span>
+                  <span className="iniciativas">
+                    {row.Iniciativas.length} Iniciativas
+                  </span>
                 </div>
               </div>
             </Col>
@@ -132,33 +135,86 @@ function App() {
   const data = [
     {
       id: 1,
-      Areas: "Área 1",
-      barra: 30,
-      Avance: "30%",
+      Areas: "Cultura",
+      barra: 25,
+      Avance: "25%",
+      Iniciativas: [
+        {
+          id: 1,
+          Nombre: "Actividades Culturales",
+          Porcentaje: "12.5%",
+          Descripcion:
+            "2260 beneficiarios de diversas actividades culturales (conciertos, obras de teatro, exposiciones, entre otras.)",
+          Hitos: [
+            {
+              id: 1,
+              Nombre: "Festival Multicultural",
+            },
+            {
+              id: 2,
+              Nombre: "Programa de Residencias para artistas",
+            },
+          ],
+        },
+        {
+          id: 2,
+          Nombre: "Talleres",
+          Descripcion: "Talleres de formación artística para personas",
+          Porcentaje: "12.5%",
+          Hitos: [
+            {
+              id: 1,
+              Nombre: "Taller de fotografía",
+            },
+            {
+              id: 2,
+              Nombre: "Taller de pintura",
+            },
+          ],
+        },
+      ],
     },
     {
       id: 2,
-      Areas: "Área 2",
-      barra: 10,
-      Avance: "10%",
-    },
-    {
-      id: 3,
-      Areas: "Área 3",
-      barra: 20,
-      Avance: "20%",
-    },
-    {
-      id: 4,
-      Areas: "Área 4",
-      barra: 48.2,
-      Avance: "48.2%",
-    },
-    {
-      id: 5,
-      Areas: "Área 5",
-      barra: 34.2,
-      Avance: "34.2%",
+      Areas: "Deportes",
+      barra: 30,
+      Avance: "30%",
+      Iniciativas: [
+        {
+          id: 1,
+          Nombre: "Programas de Deporte Comunitario",
+          Porcentaje: "15%",
+          Descripcion:
+            "3200 participantes en diferentes programas deportivos comunitarios (fútbol, baloncesto, voleibol, etc.).",
+          Hitos: [
+            {
+              id: 1,
+              Nombre: "Torneo Interbarrial de Fútbol",
+            },
+            {
+              id: 2,
+              Nombre: "Clínicas de Baloncesto para Jóvenes",
+            },
+          ],
+        },
+        {
+          id: 2,
+          Nombre: "Actividades de Bienestar y Fitness",
+          Descripcion:
+            "Programas de acondicionamiento físico y bienestar para la comunidad",
+          Porcentaje: "15%",
+          Hitos: [
+            {
+              id: 1,
+              Nombre: "Yoga en el Parque",
+            },
+            {
+              id: 2,
+              Nombre: "Caminatas Guiadas",
+            },
+          ],
+        },
+      ],
     },
   ];
 
@@ -166,6 +222,9 @@ function App() {
 
   const [progress, setProgress] = useState(0);
   const [porcentajeTotal, setPorcentajeTotal] = useState(0);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [informacionModal, setInformacionModal] = useState({});
+  const [area, setArea] = useState("");
 
   useEffect(() => {
     Papa.parse("/Presupuestos.csv", {
@@ -228,7 +287,7 @@ function App() {
   const PorcentajeTotal = () => {
     const interval = setInterval(() => {
       setProgress((prevProgress) =>
-        prevProgress >= 66 ? 66 : prevProgress + 1
+        prevProgress >= 55 ? 55 : prevProgress + 1
       );
     }, 50); // Ajusta el tiempo según necesites
 
@@ -238,37 +297,74 @@ function App() {
   const expandRow = {
     renderer: (row) => (
       <>
-        <Row
-          style={{
-            paddingTop: "20px",
-            paddingBottom: "15px",
-            paddingLeft: "10px",
-            border: "1px solid #E0E0E0",
-            margin: "0px",
-          }}
-        >
-          <Col md={10}>
-            <h5
+        {row.Iniciativas.map((iniciativa) => {
+          return (
+            <Row
               style={{
-                color: "inherit",
-                fontFamily: "'Work Sans',sans-serif",
-                fontWeight: "500",
+                paddingTop: "20px",
+                paddingBottom: "15px",
+                paddingLeft: "10px",
+                border: "1px solid #E0E0E0",
+                margin: "0px",
               }}
             >
-              Fondo Soberano de Adaptación al Cambio Climático {row.id}
-            </h5>
-            <p
-              style={{ color: "inherit", fontFamily: "'Work Sans',sans-serif" }}
-            >
-              Crear, con fondos existentes y parte de la recaudación del
-              royalty, un Fondo Soberano de Adaptación al Cambio Climático
-            </p>
-          </Col>
-          <Col md={2} style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ fontSize: "3rem", fontWeight: "700" }}>10%</div>
-          </Col>
-        </Row>
-        <Row
+              <Col md={10}>
+                <h5
+                  style={{
+                    color: "inherit",
+                    fontFamily: "'Work Sans',sans-serif",
+                    fontWeight: "500",
+                  }}
+                >
+                  {iniciativa.Nombre}
+                </h5>
+                <p
+                  style={{
+                    color: "inherit",
+                    fontFamily: "'Work Sans',sans-serif",
+                    marginBottom: "6px",
+                  }}
+                >
+                  {iniciativa.Descripcion}
+                </p>
+                <div>
+                  <span
+                    href="#"
+                    style={{
+                      fontFamily: "'Work Sans',sans-serif",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                      color: "#ED6A21",
+                    }}
+                    onClick={() => {
+                      console.log("iniciativa", iniciativa);
+                      setInformacionModal(iniciativa);
+                      setArea(row.Areas);
+                      setMostrarModal(true);
+                    }}
+                  >
+                    Ver Hitos
+                  </span>
+                </div>
+              </Col>
+              <Col md={2} style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: "700",
+                    marginLeft: "25px",
+                    color: "#81BA27",
+                  }}
+                >
+                  {iniciativa.Porcentaje}
+                </div>
+              </Col>
+            </Row>
+          );
+        })}
+
+        {/* <Row
           style={{
             paddingTop: "20px",
             paddingBottom: "15px",
@@ -303,7 +399,7 @@ function App() {
           <Col md={2} style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ fontSize: "3rem", fontWeight: "700" }}>10%</div>
           </Col>
-        </Row>
+        </Row> */}
       </>
     ),
   };
@@ -380,6 +476,18 @@ function App() {
           headerClasses="custom-table-header"
         />
       </Row>
+      {Object.keys(informacionModal).length > 0 && (
+        <ModalHitos
+          MostrarModal={mostrarModal}
+          InformacionModal={informacionModal}
+          Area={area}
+          CerrarModal={() => {
+            setMostrarModal(false);
+            setArea("");
+            setInformacionModal({});
+          }}
+        />
+      )}
     </Container>
   );
 }
